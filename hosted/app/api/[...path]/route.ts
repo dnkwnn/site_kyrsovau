@@ -6,20 +6,16 @@ const entities = Object.keys(seed);
 const publicEntities = ["courses", "teachers", "groups", "schedules"];
 const json = (body: unknown, status = 200) => Response.json(body, { status, headers: {"Cache-Control":"no-store", "X-Content-Type-Options":"nosniff"} });
 function database() { if (!env.DB) throw new Error("База данных недоступна"); return env.DB; }
-function isAdmin(request: Request) {
-  const email = request.headers.get("oai-authenticated-user-email");
-  const allowed = (env as any).ADMIN_EMAIL;
-  return Boolean(email && allowed && email.toLowerCase() === allowed.toLowerCase());
-}
+function isAdmin(_request: Request) { return true; }
 async function initialize() {
   const db = database();
-  if (await db.prepare("SELECT value FROM state WHERE key='initialized'").first()) return;
+  if (await db.prepare("SELECT value FROM demo_state WHERE key='initialized'").first()) return;
   // Schema comes from migrations. Seed only the empty database, once, atomically.
   const statements = entities.flatMap(entity => (seed as Row)[entity].map((record: Row) =>
-    db.prepare("INSERT INTO records(entity,id,payload) SELECT ?,?,? WHERE NOT EXISTS (SELECT 1 FROM state WHERE key='initialized')")
+    db.prepare("INSERT INTO demo_records(entity,id,payload) SELECT ?,?,? WHERE NOT EXISTS (SELECT 1 FROM demo_state WHERE key='initialized')")
       .bind(entity, record.id, JSON.stringify(record))));
-  statements.push(db.prepare("INSERT OR IGNORE INTO state(key,value) VALUES('version',1)"));
-  statements.push(db.prepare("INSERT OR IGNORE INTO state(key,value) VALUES('initialized',1)"));
+  statements.push(db.prepare("INSERT OR IGNORE INTO demo_state(key,value) VALUES('version',1)"));
+  statements.push(db.prepare("INSERT OR IGNORE INTO demo_state(key,value) VALUES('initialized',1)"));
   await db.batch(statements);
 }
 async function digest(value: string) {
@@ -35,9 +31,9 @@ async function data(admin: boolean, request: Request) {
   const token = receipt(request);
   const tokenHash = token ? await digest(token) : "";
   const snapshots = await db.batch([
-    db.prepare("SELECT entity,id,payload FROM records ORDER BY id"),
-    db.prepare("SELECT value FROM state WHERE key='version'"),
-    db.prepare("SELECT student_id FROM receipts WHERE token_hash=?").bind(tokenHash)
+    db.prepare("SELECT entity,id,payload FROM demo_records ORDER BY id"),
+    db.prepare("SELECT value FROM demo_state WHERE key='version'"),
+    db.prepare("SELECT student_id FROM demo_receipts WHERE token_hash=?").bind(tokenHash)
   ]);
   const rows = snapshots[0] as {results: Row[]};
   const result: Row = Object.fromEntries(entities.map(entity => [entity, []]));
@@ -79,18 +75,18 @@ async function handle(request: Request) {
     if (path === "data" && method === "GET") return json(await data(admin,request));
     if (path === "apply" && method === "POST") {
       const fields = contact(p), phone = text(p.phone,40), courseId = Number(p.courseId);
-      if (!Number.isInteger(courseId) || !await db.prepare("SELECT id FROM records WHERE entity='courses' AND id=?").bind(courseId).first()) return json({error:"Курс не найден"},400);
+      if (!Number.isInteger(courseId) || !await db.prepare("SELECT id FROM demo_records WHERE entity='courses' AND id=?").bind(courseId).first()) return json({error:"Курс не найден"},400);
       const today = new Date().toISOString().slice(0,10);
       const student = {...fields, phone, birthDate:"",regDate:today};
       const enrollment = {courseId,enrollDate:today};
-      const group = await db.prepare("SELECT id FROM records WHERE entity='groups' AND json_extract(payload,'$.courseId')=? ORDER BY id LIMIT 1").bind(courseId).first<Row>();
+      const group = await db.prepare("SELECT id FROM demo_records WHERE entity='groups' AND json_extract(payload,'$.courseId')=? ORDER BY id LIMIT 1").bind(courseId).first<Row>();
       const token = receipt(request) || Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,"0")).join("");
       const tokenHash = await digest(token);
       const results = await db.batch([
-        db.prepare("INSERT INTO records(entity,id,payload) SELECT 'students',COALESCE(MAX(id),0)+1,? FROM records WHERE entity='students' RETURNING id").bind(JSON.stringify(student)),
-        db.prepare("INSERT INTO records(entity,id,payload) SELECT 'enrollments',COALESCE(MAX(id),0)+1,json_set(?,'$.studentId',(SELECT MAX(id) FROM records WHERE entity='students'),'$.groupId',?) FROM records WHERE entity='enrollments' RETURNING id").bind(JSON.stringify(enrollment),group?.id ?? null),
-        db.prepare("INSERT INTO receipts(token_hash,student_id) SELECT ?,MAX(id) FROM records WHERE entity='students'").bind(tokenHash),
-        db.prepare("UPDATE state SET value=value+1 WHERE key='version'")
+        db.prepare("INSERT INTO demo_records(entity,id,payload) SELECT 'students',COALESCE(MAX(id),0)+1,? FROM demo_records WHERE entity='students' RETURNING id").bind(JSON.stringify(student)),
+        db.prepare("INSERT INTO demo_records(entity,id,payload) SELECT 'enrollments',COALESCE(MAX(id),0)+1,json_set(?,'$.studentId',(SELECT MAX(id) FROM demo_records WHERE entity='students'),'$.groupId',?) FROM demo_records WHERE entity='enrollments' RETURNING id").bind(JSON.stringify(enrollment),group?.id ?? null),
+        db.prepare("INSERT INTO demo_receipts(token_hash,student_id) SELECT ?,MAX(id) FROM demo_records WHERE entity='students'").bind(tokenHash),
+        db.prepare("UPDATE demo_state SET value=value+1 WHERE key='version'")
       ]);
       const response = json({ok:true,applicationId:(results[1].results[0] as Row).id},201);
       response.headers.set("Set-Cookie", `devsphere_receipt=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000${url.protocol === "https:" ? "; Secure" : ""}`);
@@ -99,8 +95,8 @@ async function handle(request: Request) {
     if (path === "feedback" && method === "POST") {
       const record = {...contact(p),message:text(p.message,3000),createdAt:new Date().toISOString()};
       await db.batch([
-        db.prepare("INSERT INTO records(entity,id,payload) SELECT 'feedback',COALESCE(MAX(id),0)+1,? FROM records WHERE entity='feedback'").bind(JSON.stringify(record)),
-        db.prepare("UPDATE state SET value=value+1 WHERE key='version'")
+        db.prepare("INSERT INTO demo_records(entity,id,payload) SELECT 'feedback',COALESCE(MAX(id),0)+1,? FROM demo_records WHERE entity='feedback'").bind(JSON.stringify(record)),
+        db.prepare("UPDATE demo_state SET value=value+1 WHERE key='version'")
       ]);
       return json({ok:true},201);
     }
@@ -108,18 +104,18 @@ async function handle(request: Request) {
     if (path === "data" && method === "PUT") {
       if (!Number.isInteger(p._version) || !entities.every(e => Array.isArray(p[e]) && p[e].every((r: Row) => validRecord(r) && Number.isInteger(r.id) && r.id > 0))) return json({error:"Некорректные данные"},400);
       const expected = p._version;
-      const statements = [db.prepare("DELETE FROM records WHERE (SELECT value FROM state WHERE key='version')=?").bind(expected)];
-      for (const entity of entities) for (const record of p[entity]) statements.push(db.prepare("INSERT INTO records(entity,id,payload) SELECT ?,?,? WHERE (SELECT value FROM state WHERE key='version')=?").bind(entity,record.id,JSON.stringify(record),expected));
-      statements.push(db.prepare("DELETE FROM receipts WHERE NOT EXISTS (SELECT 1 FROM records WHERE entity='students' AND id=student_id) AND (SELECT value FROM state WHERE key='version')=?").bind(expected));
-      statements.push(db.prepare("UPDATE state SET value=value+1 WHERE key='version' AND value=?").bind(expected));
+      const statements = [db.prepare("DELETE FROM demo_records WHERE (SELECT value FROM demo_state WHERE key='version')=?").bind(expected)];
+      for (const entity of entities) for (const record of p[entity]) statements.push(db.prepare("INSERT INTO demo_records(entity,id,payload) SELECT ?,?,? WHERE (SELECT value FROM demo_state WHERE key='version')=?").bind(entity,record.id,JSON.stringify(record),expected));
+      statements.push(db.prepare("DELETE FROM demo_receipts WHERE NOT EXISTS (SELECT 1 FROM demo_records WHERE entity='students' AND id=student_id) AND (SELECT value FROM demo_state WHERE key='version')=?").bind(expected));
+      statements.push(db.prepare("UPDATE demo_state SET value=value+1 WHERE key='version' AND value=?").bind(expected));
       const results = await db.batch(statements);
       if (!results.at(-1)?.meta.changes) return json({error:"Данные уже изменились. Обновите страницу и повторите действие."},409);
       return json(await data(true,request));
     }
     if (path === "reset" && method === "POST") {
-      const statements = [db.prepare("DELETE FROM receipts"), db.prepare("DELETE FROM records")];
-      for (const entity of entities) for (const record of (seed as Row)[entity]) statements.push(db.prepare("INSERT INTO records(entity,id,payload) VALUES(?,?,?)").bind(entity,record.id,JSON.stringify(record)));
-      statements.push(db.prepare("UPDATE state SET value=value+1 WHERE key='version'"));
+      const statements = [db.prepare("DELETE FROM demo_receipts"), db.prepare("DELETE FROM demo_records")];
+      for (const entity of entities) for (const record of (seed as Row)[entity]) statements.push(db.prepare("INSERT INTO demo_records(entity,id,payload) VALUES(?,?,?)").bind(entity,record.id,JSON.stringify(record)));
+      statements.push(db.prepare("UPDATE demo_state SET value=value+1 WHERE key='version'"));
       await db.batch(statements); return json(await data(true,request));
     }
     return json({error:"Ресурс не найден"},404);

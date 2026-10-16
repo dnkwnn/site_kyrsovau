@@ -210,9 +210,6 @@ class App {
     }
     this.attachEvents();
     this.renderAll();
-    if (this.storage.get()._admin) {
-      this.roleSelect.value = "admin"; this.currentRole = "admin"; this.updateRoleView();
-    }
     this.labelFormFields(document);
     this.observeSections();
     this.experience = new SiteExperience(this);
@@ -252,11 +249,6 @@ class App {
     });
 
     this.roleSelect.addEventListener("change", (e) => {
-      if (e.target.value === "admin" && !this.storage.get()._admin) {
-        e.target.value = "guest";
-        location.href = "/signin-with-chatgpt?return_to=/";
-        return;
-      }
       this.currentRole = e.target.value;
       this.updateRoleView();
     });
