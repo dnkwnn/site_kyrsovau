@@ -1,0 +1,12 @@
+{
+  "name": "devsphere",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-05-15",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "devsphere-db",
+      "database_id": "8b4449b5-124a-4bad-8a83-d4f8d0c531be"
+    }
+  ]
+}
