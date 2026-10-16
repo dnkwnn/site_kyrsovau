@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevSphere — Информационная система образовательного центра</title>
+  <link rel="stylesheet" href="style.css?v=blue-monitor-1">
+  <link rel="stylesheet" href="experience.css?v=blue-monitor-1">
+  <link rel="stylesheet" href="theme.css?v=monitor-power-2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Перейти к содержанию</a>
+
+  <!-- Верхняя панель (Переключение ролей) -->
+  <header class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="brand-badge">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <span>Образовательный центр · Веб-разработка</span> 
+      </div>
+      <div class="role-selector">
+        <label for="roleSelect"><i class="fa-solid fa-user-shield"></i> Роль:</label>
+        <select id="roleSelect">
+          <option value="guest">Гость</option>
+          <option value="student">Студент (Коровин Д.Ю.)</option>
+          <option value="teacher">Преподаватель (Ченцов А.М.)</option>
+          <option value="admin">Администратор</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- Главная навигация -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="#home" class="logo" data-nav="home">
+        <span class="logo-mark" aria-hidden="true">&lt;/&gt;</span><span>DevSphere<small>ОБРАЗОВАТЕЛЬНЫЙ ЦЕНТР</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Открыть меню" aria-expanded="false" aria-controls="navLinks">
+        <span class="menu-lines" aria-hidden="true"></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link active" data-nav="home">Главная</a></li>
+        <li><a href="#courses" class="nav-link" data-nav="courses">Курсы</a></li>
+        <li><a href="#teachers" class="nav-link" data-nav="teachers">Преподаватели</a></li>
+        <li><a href="#schedule" class="nav-link" data-nav="schedule">Расписание</a></li>
+        <li id="cabinetNavItem" class="hidden"><a href="#cabinet" class="nav-link" data-nav="cabinet">Личный кабинет</a></li>
+        <li id="adminNavItem" class="hidden"><a href="#admin" class="nav-link" data-nav="admin">Управление БД</a></li>
+        <li><a href="#contacts" class="nav-link" data-nav="contacts">Контакты</a></li>
+        <li><button class="btn btn-primary btn-sm" id="navEnrollBtn">Записаться</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Основной контент (Контейнеры страниц) -->
+  <main class="main-content" id="mainContent" tabindex="-1">
+    
+    <!-- 1. Главная страница -->
+    <section id="page-home" class="page-view active">
+      <div class="hero">
+        <div class="container hero-layout">
+          <div class="hero-content">
+            <div class="eyebrow"><span class="status-dot"></span> ОБУЧЕНИЕ, КОТОРОЕ ДАЁТ НАПРАВЛЕНИЕ</div>
+            <h1>Навигатор<br>твоего<br><span>будущего.</span></h1>
+            <div class="hero-bottom">
+              <p>От первой строки кода — к своему проекту.<br>Веб-разработка и базы данных в DevSphere.</p>
+              <button class="btn btn-primary" id="heroChooseCourse">Выбрать курс <span aria-hidden="true">↗</span></button>
+            </div>
+          </div>
+          <div class="hero-art">
+            <div class="art-topline"><span>НАЙДИ СВОЁ НАПРАВЛЕНИЕ</span><span>DEV / 01</span></div>
+            <div class="hero-coordinate-rings" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="hero-dots" aria-hidden="true"><span style="--x:9%;--y:10%;--delay:-0.0s"></span><span style="--x:25%;--y:10%;--delay:-0.6s"></span><span style="--x:41%;--y:10%;--delay:-1.2s"></span><span style="--x:57%;--y:10%;--delay:-1.8s"></span><span style="--x:73%;--y:10%;--delay:-2.4s"></span><span style="--x:89%;--y:10%;--delay:-3.0s"></span><span style="--x:9%;--y:26%;--delay:-1.0s"></span><span style="--x:25%;--y:26%;--delay:-1.6s"></span><span style="--x:41%;--y:26%;--delay:-2.2s"></span><span style="--x:57%;--y:26%;--delay:-2.8s"></span><span style="--x:73%;--y:26%;--delay:-3.4s"></span><span style="--x:89%;--y:26%;--delay:-0.0s"></span><span style="--x:9%;--y:42%;--delay:-2.0s"></span><span style="--x:25%;--y:42%;--delay:-2.6s"></span><span style="--x:41%;--y:42%;--delay:-3.2s"></span><span style="--x:57%;--y:42%;--delay:-3.8s"></span><span style="--x:73%;--y:42%;--delay:-0.4s"></span><span style="--x:89%;--y:42%;--delay:-1.0s"></span><span style="--x:9%;--y:58%;--delay:-3.0s"></span><span style="--x:25%;--y:58%;--delay:-3.6s"></span><span style="--x:41%;--y:58%;--delay:-0.2s"></span><span style="--x:57%;--y:58%;--delay:-0.8s"></span><span style="--x:73%;--y:58%;--delay:-1.4s"></span><span style="--x:89%;--y:58%;--delay:-2.0s"></span><span style="--x:9%;--y:74%;--delay:-0.0s"></span><span style="--x:25%;--y:74%;--delay:-0.6s"></span><span style="--x:41%;--y:74%;--delay:-1.2s"></span><span style="--x:57%;--y:74%;--delay:-1.8s"></span><span style="--x:73%;--y:74%;--delay:-2.4s"></span><span style="--x:89%;--y:74%;--delay:-3.0s"></span><span style="--x:9%;--y:90%;--delay:-1.0s"></span><span style="--x:25%;--y:90%;--delay:-1.6s"></span><span style="--x:41%;--y:90%;--delay:-2.2s"></span><span style="--x:57%;--y:90%;--delay:-2.8s"></span><span style="--x:73%;--y:90%;--delay:-3.4s"></span><span style="--x:89%;--y:90%;--delay:-0.0s"></span></div>
+            <picture><source srcset="assets/code-navigator-cutout.webp" type="image/webp"><img src="assets/code-navigator-cutout.png" width="960" height="960" fetchpriority="high" alt="Символ кода в металлических кольцах, вращающийся вокруг своего центра"></picture>
+            <div class="art-bottomline"><span>DEVELOP YOUR FUTURE</span><div class="hero-art-controls"><button type="button" id="heroMotionToggle" class="hero-motion-toggle" aria-label="Остановить анимацию" aria-pressed="false">Пауза</button><button onclick="app.scrollToSection('learningIntro')" aria-label="Об образовательном центре">↓</button></div></div>
+          </div>
+        </div>
+        <div class="container hero-caption"><span>ТВОЙ МАРШРУТ В IT</span><span>ВЕБ-РАЗРАБОТКА / БАЗЫ ДАННЫХ / FRONTEND</span><span>НАБОР 2026 — 2027</span></div>
+      </div>
+
+      <div class="container section learning-intro" id="learningIntro">
+        <div class="monitor-scene">
+          <div class="monitor-shell">
+            <div class="monitor-screen">
+              <div class="monitor-toolbar" aria-hidden="true"><span class="monitor-window-dots"><i></i><i></i><i></i></span><span>DEVSPHERE / ПРОСТРАНСТВО ДЛЯ ОБУЧЕНИЯ</span><span>↗</span></div>
+              <div class="about-graphic-panel">
+        <div class="section-kicker"><span>01 — ОБ ОБУЧЕНИИ</span><span class="section-cross" aria-hidden="true">+</span></div>
+        <div class="intro-layout">
+          <h2>Знания становятся<br>возможностями,<br><span>когда ты пробуешь.</span></h2>
+          <div class="intro-copy"><p>В DevSphere учатся создавать веб-приложения, проектировать базы данных и разбираться в устройстве современных интерфейсов.</p><p>Выбери программу под свои задачи. Курсы, преподаватели и расписание собраны здесь, чтобы заниматься было проще.</p><button class="text-link" onclick="app.navigateTo('teachers')">Познакомиться с преподавателями <span aria-hidden="true">↗</span></button></div>
+        </div>
+        <div class="learning-numbers">
+          <div><span class="number-caption">Учебные программы</span><strong id="courseCount">—</strong><small>Выбери своё направление</small></div>
+          <div><span class="number-caption">Преподаватели</span><strong id="teacherCount">—</strong><small>Познакомься с командой</small></div>
+          <div><span class="number-caption">Учебные группы</span><strong id="groupCount">—</strong><small>Учись по общему расписанию</small></div>
+        </div>
+        </div>
+            </div>
+            <div class="monitor-chin"><span aria-hidden="true">DevSphere</span><button type="button" id="monitorPowerButton" class="monitor-power-button" aria-label="Повторить включение монитора" title="Повторить включение"><span class="monitor-power" aria-hidden="true"></span></button></div>
+          </div>
+          <div class="monitor-neck" aria-hidden="true"></div>
+          <div class="monitor-base" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="programs-section">
+        <div class="container section">
+          <div class="section-kicker"><span>02 — НАПРАВЛЕНИЯ</span><span class="section-cross" aria-hidden="true">+</span></div>
+          <div class="section-title split-title"><h2>Точка старта —<br><span>твой интерес.</span></h2><div><p>От устройства сайта до архитектуры данных.<br>Найди программу, с которой захочется начать.</p><button class="text-link" id="openCourseExplorer">Подобрать программу <span aria-hidden="true">↗</span></button></div></div>
+
+          <div class="learning-journey" aria-label="Интерактивный путь обучения">
+            <div class="journey-top"><div><span class="eyebrow">КАК МОЖЕТ ВЫГЛЯДЕТЬ ТВОЙ ПУТЬ</span><h3 id="learningTrackTitle">Веб-разработка</h3></div><div class="journey-tracks" id="learningTracks" aria-label="Направление обучения"><button type="button" data-track="web" aria-pressed="true">Веб-разработка</button><button type="button" data-track="data" aria-pressed="false">Базы данных</button><button type="button" data-track="frontend" aria-pressed="false">Frontend</button></div></div>
+            <div class="journey-scene">
+              <div class="journey-visual">
+                <div class="journey-code-window" aria-hidden="true"><div><i></i><i></i><i></i><span>your-future.dev</span></div><strong id="learningSymbol">&lt;/&gt;</strong><span class="window-code-line"></span><span class="window-code-line short"></span></div>
+                <svg class="knowledge-map" viewBox="0 0 900 430" role="img" aria-label="Четыре этапа: знакомство, основы, практика, свой проект">
+                  <defs><pattern id="knowledgeGrid" width="36" height="36" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#525d74" opacity=".16"/></pattern><linearGradient id="knowledgeFill" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#0b265c"/><stop offset="1" stop-color="#a9bde4"/></linearGradient></defs>
+                  <rect width="900" height="430" fill="url(#knowledgeGrid)"/>
+                  <path class="knowledge-axis" d="M65 360H840"/>
+                  <g class="knowledge-bar is-reached" data-knowledge-bar><rect x="95" y="310" width="100" height="50" rx="5"/><path d="M95 310l22-15h100l-22 15z"/><path d="M195 310l22-15v50l-22 15z"/></g>
+                  <g class="knowledge-bar" data-knowledge-bar><rect x="295" y="245" width="100" height="115" rx="5"/><path d="M295 245l22-15h100l-22 15z"/><path d="M395 245l22-15v115l-22 15z"/></g>
+                  <g class="knowledge-bar" data-knowledge-bar><rect x="495" y="170" width="100" height="190" rx="5"/><path d="M495 170l22-15h100l-22 15z"/><path d="M595 170l22-15v190l-22 15z"/></g>
+                  <g class="knowledge-bar" data-knowledge-bar><rect x="695" y="85" width="100" height="275" rx="5"/><path d="M695 85l22-15h100l-22 15z"/><path d="M795 85l22-15v275l-22 15z"/></g>
+                  <path class="knowledge-path-base" d="M145 285C220 285 270 220 345 220S470 145 545 145S670 60 745 60"/>
+                  <path id="learningProgressPath" class="knowledge-progress" pathLength="1" d="M145 285C220 285 270 220 345 220S470 145 545 145S670 60 745 60"/>
+                  <g class="knowledge-node is-reached is-current" data-knowledge-node><circle cx="145" cy="285" r="10"/><circle class="node-halo" cx="145" cy="285" r="19"/><text x="145" y="402" text-anchor="middle">HTML / CSS</text></g>
+                  <g class="knowledge-node" data-knowledge-node><circle cx="345" cy="220" r="10"/><circle class="node-halo" cx="345" cy="220" r="19"/><text x="345" y="402" text-anchor="middle">JavaScript</text></g>
+                  <g class="knowledge-node" data-knowledge-node><circle cx="545" cy="145" r="10"/><circle class="node-halo" cx="545" cy="145" r="19"/><text x="545" y="402" text-anchor="middle">Данные и API</text></g>
+                  <g class="knowledge-node" data-knowledge-node><circle cx="745" cy="60" r="10"/><circle class="node-halo" cx="745" cy="60" r="19"/><text x="745" y="402" text-anchor="middle">Веб-приложение</text></g>
+                </svg>
+              </div>
+              <div class="journey-summary" id="learningSummary" aria-live="polite" aria-atomic="true"><span class="journey-level"><strong id="learningLevel">01</strong><span>/ 04<br>ЭТАП ПУТИ</span></span><h4 id="learningStageTitle">Первое знакомство</h4><p id="learningDescription"></p><div class="journey-task"><span>ПОПРОБУЕШЬ НА ПРАКТИКЕ</span><p id="learningTask"></p></div><button type="button" class="text-link" id="learningChoose">Найти курс по направлению <span aria-hidden="true">↗</span></button></div>
+            </div>
+            <div class="journey-stages" id="learningStages" aria-label="Выбери этап обучения"><button type="button" data-stage="0" aria-pressed="true"><small>01</small><span>Знакомство</span><i aria-hidden="true">↗</i></button><button type="button" data-stage="1" aria-pressed="false"><small>02</small><span>Основы</span><i aria-hidden="true">↗</i></button><button type="button" data-stage="2" aria-pressed="false"><small>03</small><span>Практика</span><i aria-hidden="true">↗</i></button><button type="button" data-stage="3" aria-pressed="false"><small>04</small><span>Свой проект</span><i aria-hidden="true">↗</i></button></div>
+          </div>
+
+          <div class="grid grid-3" id="homeCoursesList"></div>
+        </div>
+      </div>
+
+      <div class="container section tools-section">
+        <div class="section-kicker"><span>03 — ВСЁ ПОД РУКОЙ</span><span class="section-cross" aria-hidden="true">+</span></div>
+        <div class="section-title"><h2>Меньше поисков.<br><span>Больше обучения.</span></h2></div>
+        <div class="quick-links" aria-label="Быстрый доступ">
+          <button onclick="app.navigateTo('courses')"><span class="quick-icon" aria-hidden="true">01</span><span><strong>Программы обучения</strong><small>Описание, длительность и стоимость курсов</small></span><span aria-hidden="true">↗</span></button>
+          <button onclick="app.navigateTo('schedule')"><span class="quick-icon" aria-hidden="true">02</span><span><strong>Расписание занятий</strong><small>Дата, время и аудитория твоей группы</small></span><span aria-hidden="true">↗</span></button>
+          <button onclick="app.navigateTo('contacts')"><span class="quick-icon" aria-hidden="true">03</span><span><strong>Связь с центром</strong><small>Контакты и ответы на вопросы об обучении</small></span><span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+
+      <div class="container cta-section"><div class="cta-panel"><div class="eyebrow">СЛЕДУЮЩИЙ ШАГ — ЗА ТОБОЙ</div><div class="cta-body"><h2>Создай свой<br><span>первый проект.</span></h2><div><p>Начни с выбора программы.<br>Если есть вопросы — напиши нам.</p><button class="btn btn-light" onclick="app.navigateTo('contacts')">Связаться с центром <span aria-hidden="true">↗</span></button></div></div><span class="cta-orbit" aria-hidden="true"></span></div></div>
+    </section>
+
+    <!-- 2. Каталог курсов -->
+    <section id="page-courses" class="page-view">
+      <div class="container section">
+        <div class="section-title">
+          <span class="eyebrow">ПРОГРАММЫ ОБУЧЕНИЯ</span><h2>Найди своё<br><span>направление.</span></h2>
+          <p>Программы профессионального обучения с детальным описанием и стоимостью</p>
+        </div>
+        <div class="toolbar course-search">
+          <label for="courseSearch" class="search-label">Найти курс</label>
+          <input type="search" id="courseSearch" placeholder="Поиск курса по названию или описанию..." class="form-input">
+        </div>
+        <div class="grid grid-3" id="allCoursesList"></div>
+      </div>
+    </section>
+
+    <!-- 3. Преподаватели -->
+    <section id="page-teachers" class="page-view">
+      <div class="container section">
+        <div class="section-title">
+          <span class="eyebrow">КОМАНДА DEVSPHERE</span><h2>Люди, которые<br><span>делятся знаниями.</span></h2>
+          <p>Эксперты и практикующие специалисты в области информационных ресурсов</p>
+        </div>
+        <div class="grid grid-3" id="teachersList"></div>
+      </div>
+    </section>
+
+    <!-- 4. Расписание -->
+    <section id="page-schedule" class="page-view">
+      <div class="container section">
+        <div class="section-title">
+          <span class="eyebrow">УЧЕБНЫЙ ПРОЦЕСС</span><h2>Твой план<br><span>обучения.</span></h2>
+          <p>Актуальный график лекций, лабораторных и практических занятий</p>
+        </div>
+        <div class="toolbar filter-bar">
+          <input aria-label="Дата занятия" type="date" id="scheduleDateFilter" class="form-input">
+          <select aria-label="Учебная группа" id="scheduleGroupFilter" class="form-input">
+            <option value="">Все учебные группы</option>
+          </select>
+          <button class="btn btn-outline" id="resetScheduleFilters">Сбросить</button>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Дата</th>
+                <th>Время</th>
+                <th>Курс</th>
+                <th>Группа</th>
+                <th>Преподаватель</th>
+                <th>Аудитория</th>
+              </tr>
+            </thead>
+            <tbody id="scheduleTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Личный кабинет (Студент / Преподаватель) -->
+    <section id="page-cabinet" class="page-view">
+      <div class="container section">
+        <div class="cabinet-header">
+          <div class="profile-card" id="cabinetProfileCard"></div>
+        </div>
+        <div class="cabinet-body" id="cabinetCustomContent"></div>
+      </div>
+    </section>
+
+    <!-- 6. Панель управления БД (Администратор) -->
+    <section id="page-admin" class="page-view">
+      <div class="container section">
+        <div class="section-title">
+          <span class="eyebrow">АДМИНИСТРИРОВАНИЕ</span><h2>Управление<br><span>учебным центром.</span></h2>
+          <p>Администрирование сущностей: Студенты, Преподаватели, Курсы, Группы, Записи и Расписание</p>
+        </div>
+
+        <div class="admin-tabs" id="adminTabs">
+          <button class="tab-btn active" data-tab="students">Студенты</button>
+          <button class="tab-btn" data-tab="teachers">Преподаватели</button>
+          <button class="tab-btn" data-tab="courses">Курсы</button>
+          <button class="tab-btn" data-tab="groups">Группы</button>
+          <button class="tab-btn" data-tab="enrollments">Записи</button>
+          <button class="tab-btn" data-tab="schedules">Расписание</button>
+        </div>
+
+        <div class="admin-actions-bar">
+          <button class="btn btn-primary btn-sm" id="adminAddRecordBtn"><i class="fa-solid fa-plus"></i> Добавить запись</button>
+          <button class="btn btn-outline btn-sm" id="adminExportBtn"><i class="fa-solid fa-download"></i> Экспорт JSON</button>
+          <button class="btn btn-danger btn-sm" id="adminResetBtn"><i class="fa-solid fa-rotate-left"></i> Сброс данных</button>
+        </div>
+
+        <div class="table-responsive" style="margin-top: 1rem;">
+          <table class="data-table" id="adminDataTable">
+            <thead id="adminTableHead"></thead>
+            <tbody id="adminTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Контакты -->
+    <section id="page-contacts" class="page-view">
+      <div class="container section">
+        <div class="section-title">
+          <span class="eyebrow">БУДЕМ НА СВЯЗИ</span><h2>Обсудим твой<br><span>следующий шаг.</span></h2>
+          <p>Свяжитесь с нами или посетите учебный кампус</p>
+        </div>
+        <div class="grid grid-2">
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fa-solid fa-location-dot"></i>
+              <div>
+                <strong>Адрес учебного центра:</strong>
+                <p>г. Москва, Нежинская ул., д. 7 (МПТ РЭУ им. Г.В. Плеханова)</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fa-solid fa-phone"></i>
+              <div>
+                <strong>Телефон приемной комиссии:</strong>
+                <p>+7 (495) 123-45-67</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fa-solid fa-envelope"></i>
+              <div>
+                <strong>Электронная почта:</strong>
+                <p>info@devsphere-center.ru</p>
+              </div>
+            </div>
+            <div class="interactive-map">
+              <div class="map-placeholder">
+                <i class="fa-solid fa-map-location-dot map-icon"></i>
+                <p>Москва, Нежинская ул., 7</p>
+                <small>Метро «Славянский бульвар» / «Минская»</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-card">
+            <h3>Форма обратной связи</h3>
+            <form id="feedbackForm">
+              <div class="form-group">
+                <label>Ваше ФИО:</label>
+                <input type="text" name="name" class="form-input" required placeholder="Иванов Иван Иванович">
+              </div>
+              <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="email" class="form-input" required placeholder="ivanov@example.com">
+              </div>
+              <div class="form-group">
+                <label>Сообщение или вопрос:</label>
+                <textarea name="message" class="form-input" rows="4" required placeholder="Здравствуйте! Подскажите, когда стартует набор..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить обращение</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <dialog id="courseExplorer" class="course-explorer" aria-labelledby="explorerTitle">
+    <header class="explorer-header"><div><span class="explorer-brand">DevSphere<span>.</span></span><h2 id="explorerTitle">Твой курс. Твой маршрут.</h2></div><button type="button" id="explorerClose" class="explorer-close" aria-label="Закрыть выбор курса"><span>Закрыть</span><span aria-hidden="true">×</span></button></header>
+    <div class="explorer-grid">
+      <section class="explorer-pane explorer-left" aria-label="Курсы и интересы"><div class="pane-motion"><span class="eyebrow">01 / ВЫБЕРИ НАПРАВЛЕНИЕ</span><h3>С чего хочешь<br><span>начать?</span></h3><p class="explorer-lead">Отметь, что тебе интересно, и сравни программы.</p><div class="explorer-goals" aria-label="Твой интерес"><button type="button" data-goal="web" aria-pressed="true">Веб-приложения</button><button type="button" data-goal="data" aria-pressed="false">Базы данных</button><button type="button" data-goal="frontend" aria-pressed="false">Интерфейсы</button></div><div id="explorerCourseList" class="explorer-course-list"></div><button type="button" id="explorerCatalog" class="text-link">Открыть обычный каталог <span aria-hidden="true">↗</span></button></div></section>
+      <section class="explorer-pane explorer-right" aria-label="Преподаватель и выбор программы"><div class="pane-motion"><div id="explorerDetail" aria-live="polite"></div><button type="button" class="btn btn-primary explorer-enroll" id="explorerEnroll">Записаться на этот курс <span aria-hidden="true">↗</span></button><div class="explorer-footnote">Сравни программы и выбери то, что хочется попробовать.</div></div></section>
+    </div>
+  </dialog>
+
+  <!-- Модальное окно (Универсальное: Запись / CRUD) -->
+  <div class="modal" id="genericModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modalTitle">Заголовок</h3>
+        <button class="modal-close" id="modalCloseBtn" aria-label="Закрыть окно">&times;</button>
+      </div>
+      <form id="modalForm">
+        <div class="modal-body" id="modalBody"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="modalCancelBtn">Отмена</button>
+          <button type="submit" class="btn btn-primary" id="modalSubmitBtn">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-brand"><span>DevSphere<span class="footer-dot">.</span></span><button class="text-link" onclick="app.navigateTo('home')">На главную ↑</button></div>
+    <div class="container footer-inner">
+      <p>© 2026 DevSphere. ИС образовательного центра. МПТ РЭУ им. Г.В. Плеханова.</p>
+      <p>Специальность 09.02.09 Веб-разработка | Коровин Д.Ю., гр. ВТ-1-24</p>
+    </div>
+  </footer>
+
+  <script src="experience.js?v=monitor-power-2" defer></script>
+  <script src="app.js?v=shared-db-1" defer></script>
+</body>
+</html>
