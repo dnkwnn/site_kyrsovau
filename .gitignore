@@ -11,3 +11,5 @@ node_modules/
 restore_package.py
 
 /data.json
+
+*.tsbuildinfo

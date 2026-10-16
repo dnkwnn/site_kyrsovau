@@ -284,6 +284,10 @@ class App {
       });
     });
 
+    document.getElementById("adminRefreshBtn").addEventListener("click", async () => {
+      try { await this.storage.load(); this.renderAll(); this.renderAdminTable(); }
+      catch (error) { alert(error.message); }
+    });
     document.getElementById("adminAddRecordBtn").addEventListener("click", () => this.openAdminAddModal());
     document.getElementById("adminResetBtn").addEventListener("click", async () => {
       if (confirm("Сбросить все данные к исходным демонстрационным?")) {
@@ -658,7 +662,8 @@ class App {
       courses: ["ID", "Название курса", "Длительность", "Стоимость", "ID Преподавателя"],
       groups: ["ID", "Название группы", "ID Курса", "ID Преподавателя", "Начало", "Окончание"],
       enrollments: ["ID", "ID Студента", "ID Группы", "Дата записи"],
-      schedules: ["ID", "Дата", "Время", "ID Группы", "ID Преподавателя", "Аудитория"]
+      schedules: ["ID", "Дата", "Время", "ID Группы", "ID Преподавателя", "Аудитория"],
+      feedback: ["ID", "Имя", "Email", "Сообщение", "Дата"]
     };
 
     head.innerHTML = `<tr>${columns[tab].map(c => `<th>${c}</th>`).join("")}<th>Действия</th></tr>`;
@@ -676,6 +681,8 @@ class App {
         fieldsHtml = `<td>${item.id}</td><td>${item.name}</td><td>${item.courseId}</td><td>${item.teacherId}</td><td>${item.startDate}</td><td>${item.endDate}</td>`;
       } else if (tab === "enrollments") {
         fieldsHtml = `<td>${item.id}</td><td>${item.studentId}</td><td>${item.groupId}</td><td>${item.enrollDate}</td>`;
+      } else if (tab === "feedback") {
+        fieldsHtml = `<td>${item.id}</td><td>${item.name}</td><td>${item.email}</td><td>${item.message}</td><td>${item.createdAt}</td>`;
       } else if (tab === "schedules") {
         fieldsHtml = `<td>${item.id}</td><td>${item.date}</td><td>${item.startTime}-${item.endTime}</td><td>${item.groupId}</td><td>${item.teacherId}</td><td>${item.room}</td>`;
       }

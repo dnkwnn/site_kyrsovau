@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.svg">
   <title>DevSphere — Информационная система образовательного центра</title>
   <link rel="stylesheet" href="style.css?v=blue-monitor-1">
   <link rel="stylesheet" href="experience.css?v=blue-monitor-1">
@@ -23,8 +24,8 @@
         <label for="roleSelect"><i class="fa-solid fa-user-shield"></i> Роль:</label>
         <select id="roleSelect">
           <option value="guest">Гость</option>
-          <option value="student">Студент (Коровин Д.Ю.)</option>
-          <option value="teacher">Преподаватель (Ченцов А.М.)</option>
+          <option value="student">Студент</option>
+          <option value="teacher">Преподаватель</option>
           <option value="admin">Администратор</option>
         </select>
       </div>
@@ -235,10 +236,12 @@
           <button class="tab-btn" data-tab="groups">Группы</button>
           <button class="tab-btn" data-tab="enrollments">Записи</button>
           <button class="tab-btn" data-tab="schedules">Расписание</button>
+          <button class="tab-btn" data-tab="feedback">Обращения</button>
         </div>
 
         <div class="admin-actions-bar">
           <button class="btn btn-primary btn-sm" id="adminAddRecordBtn"><i class="fa-solid fa-plus"></i> Добавить запись</button>
+          <button class="btn btn-outline btn-sm" id="adminRefreshBtn">Обновить данные</button>
           <button class="btn btn-outline btn-sm" id="adminExportBtn"><i class="fa-solid fa-download"></i> Экспорт JSON</button>
           <button class="btn btn-danger btn-sm" id="adminResetBtn"><i class="fa-solid fa-rotate-left"></i> Сброс данных</button>
         </div>
